@@ -28,3 +28,64 @@ let initialCards = [
 initialCards.forEach(function (card) {
   console.log(card.name);
 });
+
+const editButton = document.querySelector(".profile__edit-button");
+const modal = document.querySelector("#edit-popup");
+const closeButton = modal.querySelector(".popup__close");
+
+function openModal(modal) {
+  modal.classList.add("popup_is-opened");
+}
+
+function closeModal(modal) {
+  modal.classList.remove("popup_is-opened");
+}
+
+editButton.addEventListener("click", function () {
+  handleOpenEditModal();
+});
+
+closeButton.addEventListener("click", function () {
+  closeModal(modal);
+});
+
+function fillProfileForm() {
+  const name = document.querySelector(".profile__title");
+  const description = document.querySelector(".profile__description");
+
+  const textName = name.textContent;
+  const textDescription = description.textContent;
+
+  const nameInput = document.querySelector(".popup__input_type_name");
+  const jobInput = document.querySelector(".popup__input_type_description");
+
+  nameInput.value = textName;
+  jobInput.value = textDescription;
+}
+
+function handleOpenEditModal() {
+  fillProfileForm();
+  openModal(modal);
+}
+
+const formElement = modal.querySelector(".popup__form");
+
+function handleProfileFormSubmit(evt) {
+  evt.preventDefault();
+
+  const nameInput = document.querySelector(".popup__input_type_name");
+  const jobInput = document.querySelector(".popup__input_type_description");
+
+  const nameInputText = nameInput.value;
+  const jobInputText = jobInput.value;
+
+  const name = document.querySelector(".profile__title");
+  const description = document.querySelector(".profile__description");
+
+  name.textContent = nameInputText;
+  description.textContent = jobInputText;
+
+  closeModal(modal);
+}
+
+formElement.addEventListener("submit", handleProfileFormSubmit);
