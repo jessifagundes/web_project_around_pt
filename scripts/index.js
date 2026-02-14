@@ -1,4 +1,4 @@
-let initialCards = [
+const initialCards = [
   {
     name: "Vale de Yosemite",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
@@ -25,10 +25,6 @@ let initialCards = [
   },
 ];
 
-initialCards.forEach(function (card) {
-  console.log(card.name);
-});
-
 const editButton = document.querySelector(".profile__edit-button");
 const modal = document.querySelector("#edit-popup");
 const closeButton = modal.querySelector(".popup__close");
@@ -43,6 +39,10 @@ const imageModal = document.querySelector("#image-popup");
 const modalImage = imageModal.querySelector(".popup__image");
 const modalCaption = imageModal.querySelector(".popup__caption");
 const closeImageModal = imageModal.querySelector(".popup__close");
+const profileTitle = document.querySelector(".profile__title");
+const profileDescription = document.querySelector(".profile__description");
+const nameInput = document.querySelector(".popup__input_type_name");
+const jobInput = document.querySelector(".popup__input_type_description");
 
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
@@ -52,22 +52,13 @@ function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
 }
 
-function fillProfileForm() {
-  const name = document.querySelector(".profile__title");
-  const description = document.querySelector(".profile__description");
-
-  const textName = name.textContent;
-  const textDescription = description.textContent;
-
-  const nameInput = document.querySelector(".popup__input_type_name");
-  const jobInput = document.querySelector(".popup__input_type_description");
+function handleOpenEditModal() {
+  const textName = profileTitle.textContent;
+  const textDescription = profileDescription.textContent;
 
   nameInput.value = textName;
   jobInput.value = textDescription;
-}
 
-function handleOpenEditModal() {
-  fillProfileForm();
   openModal(modal);
 }
 
@@ -82,27 +73,18 @@ closeButton.addEventListener("click", function () {
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 
-  const nameInput = document.querySelector(".popup__input_type_name");
-  const jobInput = document.querySelector(".popup__input_type_description");
-
   const nameInputText = nameInput.value;
   const jobInputText = jobInput.value;
 
-  const name = document.querySelector(".profile__title");
-  const description = document.querySelector(".profile__description");
-
-  name.textContent = nameInputText;
-  description.textContent = jobInputText;
+  profileTitle.textContent = nameInputText;
+  profileDescription.textContent = jobInputText;
 
   closeModal(modal);
 }
 
 formElement.addEventListener("submit", handleProfileFormSubmit);
 
-function getCardElement(
-  name = "Lugar sem nome",
-  link = "./images/placeholder.jpg",
-) {
+function getCardElement(name, link) {
   const cardElement = cardTemplate.content.cloneNode(true);
   const cardTitle = cardElement.querySelector(".card__title");
   const cardImage = cardElement.querySelector(".card__image");
@@ -122,10 +104,6 @@ function getCardElement(
     openModal(imageModal);
   });
 
-  closeImageModal.addEventListener("click", function () {
-    closeModal(imageModal);
-  });
-
   const deleteButton = cardElement.querySelector(".card__delete-button");
   deleteButton.addEventListener("click", function () {
     const cardToDelete = deleteButton.closest(".card");
@@ -134,6 +112,9 @@ function getCardElement(
 
   return cardElement;
 }
+closeImageModal.addEventListener("click", function () {
+  closeModal(imageModal);
+});
 
 function renderCard(name, link, container) {
   const cardElement = getCardElement(name, link);
