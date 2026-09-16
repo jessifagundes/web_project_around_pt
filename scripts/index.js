@@ -41,19 +41,16 @@ const initialCards = [
   },
 ];
 
-// Botões de abertura e inputs do formulário de perfil
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
 
-// UserInfo
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
 });
 
-// Popup com Imagem
 const popupWithImage = new PopupWithImage("#image-popup");
 popupWithImage.setEventListeners();
 
@@ -64,7 +61,6 @@ function createCard(item) {
   return card.generateCard();
 }
 
-// Section para os cards
 const cardSection = new Section(
   {
     items: initialCards,
@@ -76,7 +72,6 @@ const cardSection = new Section(
   ".cards__list",
 );
 
-// Popup de Edição de Perfil
 const popupEditProfile = new PopupWithForm("#edit-popup", (formData) => {
   userInfo.setUserInfo({
     name: formData.name,
@@ -86,10 +81,9 @@ const popupEditProfile = new PopupWithForm("#edit-popup", (formData) => {
 });
 popupEditProfile.setEventListeners();
 
-// Popup de Adição de Cartão
 const popupAddCard = new PopupWithForm("#new-card-popup", (formData) => {
   const newCardElement = createCard({
-    name: formData.place,
+    name: formData.title,
     link: formData.link,
   });
   cardSection.addItem(newCardElement);
@@ -97,7 +91,6 @@ const popupAddCard = new PopupWithForm("#new-card-popup", (formData) => {
 });
 popupAddCard.setEventListeners();
 
-// Validação dos Formulários
 const formValidators = {};
 const enableValidation = (config) => {
   const formList = Array.from(document.querySelectorAll(config.formSelector));
@@ -110,19 +103,21 @@ const enableValidation = (config) => {
 };
 enableValidation(validationConfig);
 
-// Ouvintes para abrir popups
 editButton.addEventListener("click", () => {
   const currentUser = userInfo.getUserInfo();
   nameInput.value = currentUser.name;
   jobInput.value = currentUser.job;
-  formValidators["profile-form"].resetValidation();
+  if (formValidators["edit-profile"]) {
+    formValidators["edit-profile"].resetValidation();
+  }
   popupEditProfile.open();
 });
 
 addButton.addEventListener("click", () => {
-  formValidators["new-card-form"].resetValidation();
+  if (formValidators["new-card"]) {
+    formValidators["new-card"].resetValidation();
+  }
   popupAddCard.open();
 });
 
-// Renderizar cards iniciais
 cardSection.renderItems();
