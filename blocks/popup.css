@@ -158,18 +158,26 @@
   }
 }
 
-.popup__error {
-  color: #ff0000;
-  font-size: 12px;
-  line-height: 1.25;
-  min-height: 12px;
-  display: block;
-  margin-top: 5px;
-  margin-bottom: 13px;
-}
-
 .popup__input_type_error {
   border-bottom: 1px solid #ff0000;
+}
+
+.popup__error {
+  display: block;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+  min-height: 15px;
+  margin-top: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.popup__error_visible,
+.popup__error-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .popup__button_disabled {
